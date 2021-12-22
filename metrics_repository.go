@@ -46,6 +46,7 @@ func (m *MetricsCollectorRepository) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 			"type",
 		},
@@ -59,6 +60,7 @@ func (m *MetricsCollectorRepository) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 		},
 	)
@@ -71,6 +73,7 @@ func (m *MetricsCollectorRepository) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 		},
 	)
@@ -111,6 +114,7 @@ func (m *MetricsCollectorRepository) collectRepository(ctx context.Context, logg
 
 	repositoryMetric.AddInfo(prometheus.Labels{
 		"projectID":      project.Id,
+		"projectName":    project.Name,
 		"repositoryID":   repository.Id,
 		"repositoryName": repository.Name,
 	})
@@ -118,6 +122,7 @@ func (m *MetricsCollectorRepository) collectRepository(ctx context.Context, logg
 	if repository.Size > 0 {
 		repositoryStatsMetric.Add(prometheus.Labels{
 			"projectID":    project.Id,
+			"projectName":  project.Name,
 			"repositoryID": repository.Id,
 			"type":         "size",
 		}, float64(repository.Size))
@@ -128,6 +133,7 @@ func (m *MetricsCollectorRepository) collectRepository(ctx context.Context, logg
 	if err == nil {
 		repositoryCommitsMetric.Add(prometheus.Labels{
 			"projectID":    project.Id,
+			"projectName":  project.Name,
 			"repositoryID": repository.Id,
 		}, float64(commitList.Count))
 	} else {
@@ -139,6 +145,7 @@ func (m *MetricsCollectorRepository) collectRepository(ctx context.Context, logg
 	if err == nil {
 		repositoryPushesMetric.Add(prometheus.Labels{
 			"projectID":    project.Id,
+			"projectName":  project.Name,
 			"repositoryID": repository.Id,
 		}, float64(pushList.Count))
 	} else {

@@ -29,6 +29,7 @@ func (m *MetricsCollectorQuery) Setup(collector *CollectorQuery) {
 		[]string{
 			// We use this only for bugs. Add more fields as needed.
 			"projectId",
+			"projectName",
 			"queryPath",
 		},
 	)
@@ -41,6 +42,7 @@ func (m *MetricsCollectorQuery) Setup(collector *CollectorQuery) {
 		},
 		[]string{
 			"projectId",
+			"projectName",
 			"queryPath",
 			"id",
 			"title",

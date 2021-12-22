@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-
 	log "github.com/sirupsen/logrus"
 	devopsClient "github.com/webdevops/azure-devops-exporter/azure-devops-client"
 )

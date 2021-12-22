@@ -29,6 +29,7 @@ func (m *MetricsCollectorLatestBuild) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildDefinitionID",
 			"buildID",
 			"agentPoolID",
@@ -52,6 +53,7 @@ func (m *MetricsCollectorLatestBuild) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildID",
 			"buildNumber",
 			"type",
@@ -78,6 +80,7 @@ func (m *MetricsCollectorLatestBuild) Collect(ctx context.Context, logger *log.E
 	for _, build := range list.List {
 		buildMetric.AddInfo(prometheus.Labels{
 			"projectID":         project.Id,
+			"projectName":       project.Name,
 			"buildDefinitionID": int64ToString(build.Definition.Id),
 			"buildID":           int64ToString(build.Id),
 			"buildNumber":       build.BuildNumber,
@@ -94,6 +97,7 @@ func (m *MetricsCollectorLatestBuild) Collect(ctx context.Context, logger *log.E
 
 		buildStatusMetric.AddTime(prometheus.Labels{
 			"projectID":   project.Id,
+			"projectName": project.Name,
 			"buildID":     int64ToString(build.Id),
 			"buildNumber": build.BuildNumber,
 			"type":        "started",
@@ -101,6 +105,7 @@ func (m *MetricsCollectorLatestBuild) Collect(ctx context.Context, logger *log.E
 
 		buildStatusMetric.AddTime(prometheus.Labels{
 			"projectID":   project.Id,
+			"projectName": project.Name,
 			"buildID":     int64ToString(build.Id),
 			"buildNumber": build.BuildNumber,
 			"type":        "queued",
@@ -108,6 +113,7 @@ func (m *MetricsCollectorLatestBuild) Collect(ctx context.Context, logger *log.E
 
 		buildStatusMetric.AddTime(prometheus.Labels{
 			"projectID":   project.Id,
+			"projectName": project.Name,
 			"buildID":     int64ToString(build.Id),
 			"buildNumber": build.BuildNumber,
 			"type":        "finished",
@@ -115,6 +121,7 @@ func (m *MetricsCollectorLatestBuild) Collect(ctx context.Context, logger *log.E
 
 		buildStatusMetric.AddDuration(prometheus.Labels{
 			"projectID":   project.Id,
+			"projectName": project.Name,
 			"buildID":     int64ToString(build.Id),
 			"buildNumber": build.BuildNumber,
 			"type":        "jobDuration",

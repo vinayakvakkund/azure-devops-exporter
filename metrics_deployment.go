@@ -29,6 +29,7 @@ func (m *MetricsCollectorDeployment) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"deploymentID",
 			"releaseID",
 			"releaseName",
@@ -53,6 +54,7 @@ func (m *MetricsCollectorDeployment) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"deploymentID",
 			"type",
 		},
@@ -87,6 +89,7 @@ func (m *MetricsCollectorDeployment) Collect(ctx context.Context, logger *log.En
 		for _, deployment := range deploymentList.List {
 			deploymentMetric.AddInfo(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"deploymentID":        int64ToString(deployment.Id),
 				"releaseID":           int64ToString(deployment.Release.Id),
 				"releaseName":         deployment.Release.Name,
@@ -109,6 +112,7 @@ func (m *MetricsCollectorDeployment) Collect(ctx context.Context, logger *log.En
 			if queuedOn != nil {
 				deploymentStatusMetric.AddTime(prometheus.Labels{
 					"projectID":    project.Id,
+					"projectName":  project.Name,
 					"deploymentID": int64ToString(deployment.Id),
 					"type":         "queued",
 				}, *queuedOn)
@@ -117,6 +121,7 @@ func (m *MetricsCollectorDeployment) Collect(ctx context.Context, logger *log.En
 			if startedOn != nil {
 				deploymentStatusMetric.AddTime(prometheus.Labels{
 					"projectID":    project.Id,
+					"projectName":  project.Name,
 					"deploymentID": int64ToString(deployment.Id),
 					"type":         "started",
 				}, *startedOn)
@@ -125,6 +130,7 @@ func (m *MetricsCollectorDeployment) Collect(ctx context.Context, logger *log.En
 			if completedOn != nil {
 				deploymentStatusMetric.AddTime(prometheus.Labels{
 					"projectID":    project.Id,
+					"projectName":  project.Name,
 					"deploymentID": int64ToString(deployment.Id),
 					"type":         "finished",
 				}, *completedOn)
@@ -133,6 +139,7 @@ func (m *MetricsCollectorDeployment) Collect(ctx context.Context, logger *log.En
 			if completedOn != nil && startedOn != nil {
 				deploymentStatusMetric.AddDuration(prometheus.Labels{
 					"projectID":    project.Id,
+					"projectName":  project.Name,
 					"deploymentID": int64ToString(deployment.Id),
 					"type":         "jobDuration",
 				}, completedOn.Sub(*startedOn))

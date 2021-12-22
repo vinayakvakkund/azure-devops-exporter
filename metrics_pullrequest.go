@@ -30,6 +30,7 @@ func (m *MetricsCollectorPullRequest) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 			"pullrequestID",
 			"pullrequestTitle",
@@ -50,6 +51,7 @@ func (m *MetricsCollectorPullRequest) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 			"pullrequestID",
 			"type",
@@ -64,6 +66,7 @@ func (m *MetricsCollectorPullRequest) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 			"pullrequestID",
 			"label",
@@ -107,6 +110,7 @@ func (m *MetricsCollectorPullRequest) collectPullRequests(ctx context.Context, l
 
 		pullRequestMetric.AddInfo(prometheus.Labels{
 			"projectID":        project.Id,
+			"projectName":      project.Name,
 			"repositoryID":     repository.Id,
 			"pullrequestID":    int64ToString(pullRequest.Id),
 			"pullrequestTitle": pullRequest.Title,
@@ -120,6 +124,7 @@ func (m *MetricsCollectorPullRequest) collectPullRequests(ctx context.Context, l
 
 		pullRequestStatusMetric.AddTime(prometheus.Labels{
 			"projectID":     project.Id,
+			"projectName":   project.Name,
 			"repositoryID":  repository.Id,
 			"pullrequestID": int64ToString(pullRequest.Id),
 			"type":          "created",
@@ -128,6 +133,7 @@ func (m *MetricsCollectorPullRequest) collectPullRequests(ctx context.Context, l
 		for _, label := range pullRequest.Labels {
 			pullRequestLabelMetric.AddInfo(prometheus.Labels{
 				"projectID":     project.Id,
+				"projectName":   project.Name,
 				"repositoryID":  repository.Id,
 				"pullrequestID": int64ToString(pullRequest.Id),
 				"label":         label.Name,

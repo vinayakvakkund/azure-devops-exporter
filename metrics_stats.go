@@ -41,6 +41,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		[]string{
 			"agentPoolID",
 			"projectID",
+			"projectName",
 			"result",
 		},
 	)
@@ -55,6 +56,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		[]string{
 			"agentPoolID",
 			"projectID",
+			"projectName",
 			"result",
 		},
 	)
@@ -69,6 +71,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		[]string{
 			"agentPoolID",
 			"projectID",
+			"projectName",
 			"result",
 		},
 	)
@@ -85,6 +88,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildDefinitionID",
 			"result",
 		},
@@ -98,6 +102,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildDefinitionID",
 		},
 	)
@@ -111,6 +116,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildDefinitionID",
 			"result",
 		},
@@ -125,6 +131,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"buildDefinitionID",
 			"result",
 		},
@@ -139,6 +146,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseDefinitionID",
 			"definitionEnvironmentID",
 			"status",
@@ -154,6 +162,7 @@ func (m *MetricsCollectorStats) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseDefinitionID",
 			"definitionEnvironmentID",
 		},
@@ -184,12 +193,14 @@ func (m *MetricsCollectorStats) CollectReleases(ctx context.Context, logger *log
 			case "succeeded":
 				m.prometheus.projectReleaseSuccess.With(prometheus.Labels{
 					"projectID":               release.Project.Id,
+					"projectName":             release.Project.Name,
 					"releaseDefinitionID":     int64ToString(release.Definition.Id),
 					"definitionEnvironmentID": int64ToString(environment.DefinitionEnvironmentId),
 				}).Observe(1)
 			case "failed", "partiallySucceeded":
 				m.prometheus.projectReleaseSuccess.With(prometheus.Labels{
 					"projectID":               release.Project.Id,
+					"projectName":             release.Project.Name,
 					"releaseDefinitionID":     int64ToString(release.Definition.Id),
 					"definitionEnvironmentID": int64ToString(environment.DefinitionEnvironmentId),
 				}).Observe(0)
@@ -199,6 +210,7 @@ func (m *MetricsCollectorStats) CollectReleases(ctx context.Context, logger *log
 			if timeToDeploy > 0 {
 				m.prometheus.projectReleaseDuration.With(prometheus.Labels{
 					"projectID":               release.Project.Id,
+					"projectName":             release.Project.Name,
 					"releaseDefinitionID":     int64ToString(release.Definition.Id),
 					"definitionEnvironmentID": int64ToString(environment.DefinitionEnvironmentId),
 					"status":                  environment.Status,
@@ -223,11 +235,13 @@ func (m *MetricsCollectorStats) CollectBuilds(ctx context.Context, logger *log.E
 		m.prometheus.agentPoolBuildCount.With(prometheus.Labels{
 			"agentPoolID": int64ToString(build.Queue.Pool.Id),
 			"projectID":   build.Project.Id,
+			"projectName": build.Project.Name,
 			"result":      build.Result,
 		}).Inc()
 
 		m.prometheus.projectBuildCount.With(prometheus.Labels{
 			"projectID":         build.Project.Id,
+			"projectName":       build.Project.Name,
 			"buildDefinitionID": int64ToString(build.Definition.Id),
 			"result":            build.Result,
 		}).Inc()
@@ -236,11 +250,13 @@ func (m *MetricsCollectorStats) CollectBuilds(ctx context.Context, logger *log.E
 		case "succeeded":
 			m.prometheus.projectBuildSuccess.With(prometheus.Labels{
 				"projectID":         build.Project.Id,
+				"projectName":       build.Project.Name,
 				"buildDefinitionID": int64ToString(build.Definition.Id),
 			}).Observe(1)
 		case "failed":
 			m.prometheus.projectBuildSuccess.With(prometheus.Labels{
 				"projectID":         build.Project.Id,
+				"projectName":       build.Project.Name,
 				"buildDefinitionID": int64ToString(build.Definition.Id),
 			}).Observe(0)
 		}
@@ -251,11 +267,13 @@ func (m *MetricsCollectorStats) CollectBuilds(ctx context.Context, logger *log.E
 			m.prometheus.agentPoolBuildDuration.With(prometheus.Labels{
 				"agentPoolID": int64ToString(build.Queue.Pool.Id),
 				"projectID":   build.Project.Id,
+				"projectName": build.Project.Name,
 				"result":      build.Result,
 			}).Observe(jobDuration.Seconds())
 
 			m.prometheus.projectBuildDuration.With(prometheus.Labels{
 				"projectID":         build.Project.Id,
+				"projectName":       build.Project.Name,
 				"buildDefinitionID": int64ToString(build.Definition.Id),
 				"result":            build.Result,
 			}).Observe(jobDuration.Seconds())
@@ -265,11 +283,13 @@ func (m *MetricsCollectorStats) CollectBuilds(ctx context.Context, logger *log.E
 			m.prometheus.agentPoolBuildWait.With(prometheus.Labels{
 				"agentPoolID": int64ToString(build.Queue.Pool.Id),
 				"projectID":   build.Project.Id,
+				"projectName": build.Project.Name,
 				"result":      build.Result,
 			}).Observe(waitDuration)
 
 			m.prometheus.projectBuildWait.With(prometheus.Labels{
 				"projectID":         build.Project.Id,
+				"projectName":       build.Project.Name,
 				"buildDefinitionID": int64ToString(build.Definition.Id),
 				"result":            build.Result,
 			}).Observe(waitDuration)

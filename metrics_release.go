@@ -36,6 +36,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseID",
 			"releaseDefinitionID",
 			"requestedBy",
@@ -55,6 +56,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseID",
 			"releaseDefinitionID",
 			"sourceId",
@@ -74,6 +76,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseID",
 			"releaseDefinitionID",
 			"environmentID",
@@ -92,6 +95,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseID",
 			"releaseDefinitionID",
 			"environmentID",
@@ -107,6 +111,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseID",
 			"releaseDefinitionID",
 			"environmentID",
@@ -129,6 +134,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseDefinitionID",
 			"releaseNameFormat",
 			"releaseDefinitionName",
@@ -145,6 +151,7 @@ func (m *MetricsCollectorRelease) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"releaseDefinitionID",
 			"environmentID",
 			"environmentName",
@@ -189,6 +196,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 		// Release definition
 		releaseDefinitionMetric.AddInfo(prometheus.Labels{
 			"projectID":             project.Id,
+			"projectName":           project.Name,
 			"releaseDefinitionID":   int64ToString(releaseDefinition.Id),
 			"releaseNameFormat":     releaseDefinition.ReleaseNameFormat,
 			"releaseDefinitionName": releaseDefinition.Name,
@@ -199,6 +207,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 		for _, environment := range releaseDefinition.Environments {
 			releaseDefinitionEnvironmentMetric.AddInfo(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseDefinitionID": int64ToString(releaseDefinition.Id),
 				"environmentID":       int64ToString(environment.Id),
 				"environmentName":     environment.Name,
@@ -223,6 +232,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 	for _, release := range releaseList.List {
 		releaseMetric.AddInfo(prometheus.Labels{
 			"projectID":           project.Id,
+			"projectName":         project.Name,
 			"releaseID":           int64ToString(release.Id),
 			"releaseDefinitionID": int64ToString(release.Definition.Id),
 			"requestedBy":         release.RequestedBy.DisplayName,
@@ -236,6 +246,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 		for _, artifact := range release.Artifacts {
 			releaseArtifactMetric.AddInfo(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseID":           int64ToString(release.Id),
 				"releaseDefinitionID": int64ToString(release.Definition.Id),
 				"sourceId":            artifact.SourceId,
@@ -250,6 +261,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 		for _, environment := range release.Environments {
 			releaseEnvironmentMetric.AddInfo(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseID":           int64ToString(release.Id),
 				"releaseDefinitionID": int64ToString(release.Definition.Id),
 				"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
@@ -261,6 +273,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 
 			releaseEnvironmentStatusMetric.AddBool(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseID":           int64ToString(release.Id),
 				"releaseDefinitionID": int64ToString(release.Definition.Id),
 				"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
@@ -269,6 +282,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 
 			releaseEnvironmentStatusMetric.AddTime(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseID":           int64ToString(release.Id),
 				"releaseDefinitionID": int64ToString(release.Definition.Id),
 				"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
@@ -277,6 +291,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 
 			releaseEnvironmentStatusMetric.AddIfNotZero(prometheus.Labels{
 				"projectID":           project.Id,
+				"projectName":         project.Name,
 				"releaseID":           int64ToString(release.Id),
 				"releaseDefinitionID": int64ToString(release.Definition.Id),
 				"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
@@ -291,6 +306,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 
 				releaseEnvironmentApprovalMetric.AddTime(prometheus.Labels{
 					"projectID":           project.Id,
+					"projectName":         project.Name,
 					"releaseID":           int64ToString(release.Id),
 					"releaseDefinitionID": int64ToString(release.Definition.Id),
 					"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
@@ -313,6 +329,7 @@ func (m *MetricsCollectorRelease) Collect(ctx context.Context, logger *log.Entry
 
 				releaseEnvironmentApprovalMetric.AddTime(prometheus.Labels{
 					"projectID":           project.Id,
+					"projectName":         project.Name,
 					"releaseID":           int64ToString(release.Id),
 					"releaseDefinitionID": int64ToString(release.Definition.Id),
 					"environmentID":       int64ToString(environment.DefinitionEnvironmentId),
