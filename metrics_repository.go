@@ -32,6 +32,7 @@ func (m *MetricsCollectorRepository) Setup(collector *CollectorProject) {
 		},
 		[]string{
 			"projectID",
+			"projectName",
 			"repositoryID",
 			"repositoryName",
 		},
